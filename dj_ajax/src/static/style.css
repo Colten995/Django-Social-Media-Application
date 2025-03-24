@@ -1,0 +1,4 @@
+/* This file is in the static directory and is used in ALL files */
+.not-visible {
+    display: none;
+}
