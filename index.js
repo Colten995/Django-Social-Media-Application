@@ -44,6 +44,26 @@ $.ajax({
     }
 });
 // 2. XMLHttpRequest
+
+const req = new XMLHttpRequest();
+
+req.addEventListener('readystatechange', ()=>{
+    //0 = request isn't initialized
+    //1 = server connection has been created
+    //2 = request has been received
+    //3 = request is processing
+    //4 = request is ready and response is ready
+    //check if request is completed and ready
+    if(req.readyState === 4){
+        console.log('xhttp', req.responseText);
+    }
+});
+
+//open a new request using the GET method and the url to the API
+req.open('GET', url);
+//send the request
+req.send();
+
 // 3. fetch method
 
 // other popular: axios library, async await + fetch
