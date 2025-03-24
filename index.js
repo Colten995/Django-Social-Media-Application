@@ -8,7 +8,7 @@ testEl.textContent = "bye bye";
 //change the element text when the element is clicked
 testEl.addEventListener('click', () =>{
     console.log('clicked');
-    testEl.innerHTML = "<b>clicked</b>"
+    testEl.innerHTML = "<b>clicked</b>";
 });
 
 //log a message to the console when the user hovers over the element with their mouse
@@ -37,13 +37,14 @@ $.ajax({
     type: 'GET',
     url: url,
     success: function(response){
-        console.log('jquery ajax', response)
+        console.log('jquery ajax', response);
     },
     error: function(error){
-        console.log(error)
+        console.log(error);
     }
 });
-// 2. XMLHttpRequest
+
+// 2. XMLHttpRequest-------------------------------------
 
 const req = new XMLHttpRequest();
 
@@ -55,7 +56,8 @@ req.addEventListener('readystatechange', ()=>{
     //4 = request is ready and response is ready
     //check if request is completed and ready
     if(req.readyState === 4){
-        console.log('xhttp', req.responseText);
+        //JSON parse parses the request into a JSON object to generate the same behavior as the first method
+        console.log('xhttp', JSON.parse(req.responseText));
     }
 });
 
@@ -64,6 +66,12 @@ req.open('GET', url);
 //send the request
 req.send();
 
-// 3. fetch method
+// 3. fetch method----------------------------------
+
+//set the reponse object to be a JSON object -> log the response data returned
+//catch any errors and log them
+fetch(url)
+.then(resp => resp.json()).then(data=>console.log('fetch', data))
+.catch(err=> console.log(err));
 
 // other popular: axios library, async await + fetch
