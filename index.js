@@ -1,3 +1,5 @@
 console.log("Hello World");
 
-console.log(document);
+const testEl = document.getElementById("test-el");
+
+testEl.textContent = "bye bye";
