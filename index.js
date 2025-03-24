@@ -27,3 +27,23 @@ document.addEventListener('scroll', ()=>
     const positionY = window.scrollY;
     console.log(positionY);
 });
+
+
+// GET the data with ajax from the free swapi API
+const url = "https://swapi.dev/api/people";
+
+// 1. jquery ajax method <- this is what we are going to use in this course
+$.ajax({
+    type: 'GET',
+    url: url,
+    success: function(response){
+        console.log('jquery ajax', response)
+    },
+    error: function(error){
+        console.log(error)
+    }
+});
+// 2. XMLHttpRequest
+// 3. fetch method
+
+// other popular: axios library, async await + fetch
