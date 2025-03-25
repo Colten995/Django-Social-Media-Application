@@ -1,0 +1,19 @@
+<!--This means inherit from the base html file-->
+{% extends "base.html" %}
+{% load static %}
+
+<!-- load the javascript from the main.js file and defer means wait until the page is fully loaded to load the script-->
+{% block scripts %}
+    <script src="{% static 'posts/main.js' %}" defer></script>
+{% endblock scripts %}
+
+{% block title %}
+posts
+{% endblock title %}
+
+<!-- Displays the content of each page in qs with the title of the post and the description of the post-->
+{% block content %}
+{% for obj in qs %}
+    {{obj.title}} - {{obj.body}} <br>
+{% endfor %}
+{% endblock content %}

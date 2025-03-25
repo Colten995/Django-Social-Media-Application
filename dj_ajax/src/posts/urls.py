@@ -1,0 +1,13 @@
+from django.urls import path
+from .views import (
+    post_list_and_create
+)
+
+app_name = 'posts'
+#create a new URL pattern for the posts page
+#The empty quotes means it starts at the main page
+
+#if we add '/posts' to the url pattern path we would have to navigate to http://127.0.0.1:8000/posts to get to this page
+urlpatterns = [
+    path('', post_list_and_create, name='main_board'),
+]

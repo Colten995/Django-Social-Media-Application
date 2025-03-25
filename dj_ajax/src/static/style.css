@@ -1,4 +1,4 @@
-/* This file is in the static directory and is used in ALL files */
+/*This contains static styles that are available to ALL our applications*/
 .not-visible {
     display: none;
 }
