@@ -13,7 +13,8 @@ posts
 
 <!-- Displays the content of each page in qs with the title of the post and the description of the post-->
 {% block content %}
-{% for obj in qs %}
-    {{obj.title}} - {{obj.body}} <br>
-{% endfor %}
+    {% for obj in qs %}
+        {{obj.title}} - {{obj.body}} <br>
+    {% endfor %}
+    <div id="hello-world"></div>
 {% endblock content %}
