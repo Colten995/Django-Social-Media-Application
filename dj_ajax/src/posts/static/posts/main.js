@@ -54,7 +54,18 @@ $.ajax({
                 //Need to use back ticks (`) instead of quotes (') because we want to have multiline html and inject element title data
                 //The ${} is used to access variables in the html
                 postsBox.innerHTML += `
-                    ${el.title} - <b>${el.body}</b><br>
+                    <!-- The line of code below is commented out -->
+                    <!--${el.title} - <b>${el.body}</b><br>-->
+
+                    <!-- Put the post contents into bootstrap card elements-->
+                    <!-- mb2 puts a bottom margin of 2 on the element -->
+                    <div class="card mb-2">
+                        <div class="card-body">
+                        <h5 class="card-title">${el.title}</h5>
+                        <p class="card-text">${el.body}</p>
+                        <a href="#" class="btn btn-primary">Details</a>
+                        </div>
+                    </div>
                 `
             });
         }, 100);
