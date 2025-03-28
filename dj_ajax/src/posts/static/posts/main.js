@@ -61,9 +61,20 @@ $.ajax({
                     <!-- mb2 puts a bottom margin of 2 on the element -->
                     <div class="card mb-2">
                         <div class="card-body">
-                        <h5 class="card-title">${el.title}</h5>
-                        <p class="card-text">${el.body}</p>
-                        <a href="#" class="btn btn-primary">Details</a>
+                            <h5 class="card-title">${el.title}</h5>
+                            <p class="card-text">${el.body}</p>
+                        </div>
+                        <!-- Add the two buttons for details and like using a row and col div class -->
+                        <!-- the col-2 puts the buttons closer to each other, bootstrap uses a 12 grid system -->
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-1">
+                                    <a href="#" class="btn btn-primary">Details</a>
+                                </div>
+                                <div class="col-1">
+                                    <a href="#" class="btn btn-primary">Like</a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 `
