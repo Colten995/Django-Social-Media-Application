@@ -1,15 +1,31 @@
 from django.shortcuts import render
 from .models import Post
 from django.http import JsonResponse
+from .forms import PostForm
+from profiles.models import Profile
 # from django.core import serializers
 
 # Create your views here.
 
 #render all of the posts using the template provided to the render method
 def post_list_and_create(request):
+    form = PostForm(request.POST or None)
     #load all the post objects
-    qs = Post.objects.all()
-    return render(request, 'posts/main.html', {'qs':qs})
+    # qs = Post.objects.all()
+
+    if is_ajax(request):
+        if form.is_valid():
+            #get the author
+            author = Profile.objects.get(user=request.user)
+            #don't commit or submit the form just yet
+            instance = form.save(commit=False)
+            instance.author = author
+            instance.save()
+    context = {
+        # 'qs' : qs,
+        'form' : form,
+    }
+    return render(request, 'posts/main.html', context)
 
 #The query set is not a JSON serializable format, so we need to format it
 def load_post_data_view(request, num_posts):

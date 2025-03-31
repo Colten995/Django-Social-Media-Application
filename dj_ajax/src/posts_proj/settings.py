@@ -29,6 +29,8 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+# had to run python -m pip install crispy-bootstrap4
+# and add 'crispy_bootstrap4' to the list to get crispy forms to work
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -44,7 +46,10 @@ INSTALLED_APPS = [
 
     #3rd party apps
     'crispy_forms',
+    'crispy_bootstrap4'
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
