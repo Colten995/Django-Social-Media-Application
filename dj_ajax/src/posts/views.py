@@ -12,7 +12,15 @@ def post_list_and_create(request):
     return render(request, 'posts/main.html', {'qs':qs})
 
 #The query set is not a JSON serializable format, so we need to format it
-def load_post_data_view(request):
+def load_post_data_view(request, num_posts):
+    #Get the number of posts to display from the url
+    visible = 3
+    #The post id at the upper bound
+    upper = num_posts
+    #The post id at the lower bound
+    lower = upper - visible
+    size = Post.objects.all().count()
+
     qs = Post.objects.all()
     data = []
     #create a post object for each query in the query set
@@ -21,12 +29,14 @@ def load_post_data_view(request):
             'id' : obj.id,
             'title' : obj.title,
             'body' : obj.body,
+            #one line if statement
+            'liked': True if request.user in obj.liked.all() else False,
             'author' : obj.author.user.username
         }
         data.append(item)
     # #We use the django serializers serialize method to serialize the query set
     # data = serializers.serialize('json', qs)
-    return JsonResponse({'data':data})
+    return JsonResponse({'data':data[lower:upper], 'size':size})
 
 #When this function is called it returns a JSON response with a text attribute set to hello world
 def hello_world_view(request):
