@@ -73,11 +73,11 @@ const getData = ()=>{
                             <!-- the col-1 puts the buttons closer to each other, bootstrap uses a 12 grid system -->
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="col-1">
+                                    <div class="col-2">
                                         <a href="#" class="btn btn-primary">Details</a>
                                     </div>
-                                    <div class="col-1">
-                                        <a href="#" class="btn btn-primary">Like</a>
+                                    <div class="col-2">
+                                        <a href="#" class="btn btn-primary">${el.liked ? `Unlike (${el.count})`: `Like (${el.count})`}</a>
                                     </div>
                                 </div>
                             </div>

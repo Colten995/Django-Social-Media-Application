@@ -29,8 +29,8 @@ def load_post_data_view(request, num_posts):
             'id' : obj.id,
             'title' : obj.title,
             'body' : obj.body,
-            #one line if statement
             'liked': True if request.user in obj.liked.all() else False,
+            'count': obj.like_count,
             'author' : obj.author.user.username
         }
         data.append(item)
