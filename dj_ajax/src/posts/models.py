@@ -18,3 +18,6 @@ class Post(models.Model):
     @property
     def like_count(self):
         return self.liked.all().count()
+    #Somehow this reverses the order of the posts
+    class Meta:
+        ordering = ("-created",)

@@ -7,6 +7,8 @@ from profiles.models import Profile
 
 # Create your views here.
 
+#any function that checks if the request is ajax means we are dealing with an ajax call
+
 #render all of the posts using the template provided to the render method
 def post_list_and_create(request):
     form = PostForm(request.POST or None)
@@ -21,6 +23,13 @@ def post_list_and_create(request):
             instance = form.save(commit=False)
             instance.author = author
             instance.save()
+            return JsonResponse({
+                'title': instance.title,
+                'body': instance.body,
+                'author': instance.author.user.username,
+                'id': instance.id,
+            })
+
     context = {
         # 'qs' : qs,
         'form' : form,
@@ -29,30 +38,31 @@ def post_list_and_create(request):
 
 #The query set is not a JSON serializable format, so we need to format it
 def load_post_data_view(request, num_posts):
-    #Get the number of posts to display from the url
-    visible = 3
-    #The post id at the upper bound
-    upper = num_posts
-    #The post id at the lower bound
-    lower = upper - visible
-    size = Post.objects.all().count()
+    if is_ajax(request):
+        #Get the number of posts to display from the url
+        visible = 3
+        #The post id at the upper bound
+        upper = num_posts
+        #The post id at the lower bound
+        lower = upper - visible
+        size = Post.objects.all().count()
 
-    qs = Post.objects.all()
-    data = []
-    #create a post object for each query in the query set
-    for obj in qs:
-        item = {
-            'id' : obj.id,
-            'title' : obj.title,
-            'body' : obj.body,
-            'liked': True if request.user in obj.liked.all() else False,
-            'count': obj.like_count,
-            'author' : obj.author.user.username
-        }
-        data.append(item)
-    # #We use the django serializers serialize method to serialize the query set
-    # data = serializers.serialize('json', qs)
-    return JsonResponse({'data':data[lower:upper], 'size':size})
+        qs = Post.objects.all()
+        data = []
+        #create a post object for each query in the query set
+        for obj in qs:
+            item = {
+                'id' : obj.id,
+                'title' : obj.title,
+                'body' : obj.body,
+                'liked': True if request.user in obj.liked.all() else False,
+                'count': obj.like_count,
+                'author' : obj.author.user.username
+            }
+            data.append(item)
+        # #We use the django serializers serialize method to serialize the query set
+        # data = serializers.serialize('json', qs)
+        return JsonResponse({'data':data[lower:upper], 'size':size})
 
 def like_unlike_post(request):
     #.is_ajax attribute is deprecated, so we have to use our own function
