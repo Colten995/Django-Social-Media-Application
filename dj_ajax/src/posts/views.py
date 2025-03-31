@@ -38,6 +38,23 @@ def load_post_data_view(request, num_posts):
     # data = serializers.serialize('json', qs)
     return JsonResponse({'data':data[lower:upper], 'size':size})
 
+def like_unlike_post(request):
+    #.is_ajax attribute is deprecated, so we have to use our own function
+    if is_ajax(request):
+        #Get the primary key from the like/unlike ajax request in main.js
+        pk = request.POST.get('pk')
+        obj = Post.objects.get(pk=pk)
+        if request.user in obj.liked.all():
+            liked = False
+            obj.liked.remove(request.user)
+        else:
+            liked = True
+            obj.liked.add(request.user)
+        return JsonResponse({'liked': liked, 'count': obj.like_count})
+
 #When this function is called it returns a JSON response with a text attribute set to hello world
 def hello_world_view(request):
     return JsonResponse({'text': 'hello world x2'})
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
