@@ -1,5 +1,5 @@
 console.log('hello world detail');
-
+const postBox = document.getElementById('post-box');
 const backBtn = document.getElementById('back-btn');
 const updateBtn = document.getElementById('update-btn');
 const deleteBtn = document.getElementById('delete-btn');
@@ -30,6 +30,20 @@ $.ajax({
             updateBtn.classList.remove('not-visible');
             deleteBtn.classList.remove('not-visible');
         }
+        //This creates an html h3 element from javascript
+        const titleEl = document.createElement('h3');
+        //First paramater is the attribute, second is the value
+        titleEl.setAttribute('class', 'mt-3')
+
+        const bodyEl = document.createElement('p');
+        //First paramater is the attribute, second is the value
+        bodyEl.setAttribute('class', 'mt-1')
+
+        titleEl.textContent = data.title;
+        bodyEl.textContent = data.body;
+
+        postBox.appendChild(titleEl);
+        postBox.appendChild(bodyEl);
 
         spinnerBox.classList.add('not-visible');
     },
