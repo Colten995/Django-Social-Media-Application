@@ -70,6 +70,13 @@ const getCookie = (name) => {
 }
 const csrftoken = getCookie('csrftoken');
 
+const deleted = localStorage.getItem('title');
+if(deleted)
+{
+    handleAlerts('danger', `deleted "${deleted}"`);
+    localStorage.clear();
+}
+
 const likeUnlikePosts = ()=>{
     //The [... ] operator sets the contents between the ellipses and the square bracket to an array
     const likeUnlikeForms = [...document.getElementsByClassName('like-unlike-forms')];
