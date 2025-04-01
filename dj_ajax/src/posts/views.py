@@ -102,9 +102,28 @@ def like_unlike_post(request):
             obj.liked.add(request.user)
         return JsonResponse({'liked': liked, 'count': obj.like_count})
 
-#When this function is called it returns a JSON response with a text attribute set to hello world
-def hello_world_view(request):
-    return JsonResponse({'text': 'hello world x2'})
+# #When this function is called it returns a JSON response with a text attribute set to hello world
+# def hello_world_view(request):
+#     return JsonResponse({'text': 'hello world x2'})
+
+def update_post(request, pk):
+    obj = Post.objects.get(pk=pk)
+    if is_ajax(request):
+        new_title = request.POST.get('title')
+        new_body = request.POST.get('body')
+        obj.title = new_title
+        obj.body = new_body
+        obj.save()
+    return JsonResponse({
+        'title' : new_title,
+        'body' : new_body,
+    })
+
+def delete_post(request, pk):
+    obj = Post.objects.get(pk=pk)
+    if is_ajax(request):
+        obj.delete()
+    return JsonResponse({})
 
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
