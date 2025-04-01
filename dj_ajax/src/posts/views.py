@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import Post
-from django.http import JsonResponse
+from .models import Post, Photo
+from django.http import JsonResponse, HttpResponse
 from .forms import PostForm
 from profiles.models import Profile
 # from django.core import serializers
@@ -8,6 +8,9 @@ from profiles.models import Profile
 # Create your views here.
 
 #any function that checks if the request is ajax means we are dealing with an ajax call
+
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 #render all of the posts using the template provided to the render method
 def post_list_and_create(request):
@@ -124,6 +127,12 @@ def delete_post(request, pk):
     if is_ajax(request):
         obj.delete()
         return JsonResponse({})
-
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+    
+def image_upload_view(request):
+    # print (request.FILES)
+    if request.method == 'POST':
+        img = request.FILES.get('file')
+        new_post_id = request.POST.get('new_post_id')
+        post = Post.objects.get(id=new_post_id)
+        Photo.objects.create(image=img, post=post)
+    return HttpResponse()
