@@ -75,6 +75,19 @@ def load_post_data_view(request, num_posts):
         # data = serializers.serialize('json', qs)
         return JsonResponse({'data':data[lower:upper], 'size':size})
 
+def post_detail_data_view(request, pk):
+    #This is shorthand to get the post that has a primary key equal to the primary key
+    obj = Post.objects.get(pk=pk)
+    data = {
+        'id' : obj.id,
+        'title' : obj.title,
+        'body' : obj.body,
+        'author' : obj.author.user.username,
+        'logged_in' : request.user.username,
+    }
+
+    return JsonResponse({'data' : data})
+
 def like_unlike_post(request):
     #.is_ajax attribute is deprecated, so we have to use our own function
     if is_ajax(request):
