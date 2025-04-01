@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+
+<!-- blocks are templates that overwrite the block in the child file with the same name -->
+{% block scripts %}
+{% endblock scripts %}
+
+{% block title %}
+{{obj.title}} detail
+{% endblock title %}
+
+{% block content %}
+{{obj.title}}
+<hr>
+{{obj.body}}
+{% endblock content %}
