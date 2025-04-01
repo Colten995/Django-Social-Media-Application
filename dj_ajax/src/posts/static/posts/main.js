@@ -14,7 +14,10 @@ const postForm = document.getElementById('post-form');
 const title = document.getElementById('id_title');
 const body = document.getElementById('id_body');
 const csrf = document.getElementsByName('csrfmiddlewaretoken');
+
+const alertBox = document.getElementById('alert-box')
 console.log('csrf', csrf[0].value);
+
 
 //Create an ajax request to get the hello world view response
 // $.ajax({
@@ -180,10 +183,44 @@ postForm.addEventListener('submit', e=>{
         success: function(response)
         {
             console.log(response);
+            //'afterbegin' puts the postBox at the top of the element
+            postsBox.insertAdjacentHTML('afterbegin', `
+                <!-- The line of code below is commented out -->
+                <!--${response.title} - <b>${response.body}</b><br>-->
+
+                <!-- Put the post contents into bootstrap card elements-->
+                <!-- mb2 puts a bottom margin of 2 on the element -->
+                <div class="card mb-2">
+                    <div class="card-body">
+                        <h5 class="card-title">${response.title}</h5>
+                        <p class="card-text">${response.body}</p>
+                    </div>
+                    <!-- Add the two buttons for details and like using a row and col div class -->
+                    <!-- the col-1 puts the buttons closer to each other, bootstrap uses a 12 grid system -->
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-2">
+                                <a href="#" class="btn btn-primary">Details</a>
+                            </div>
+                            <div class="col-2">
+                                <!-- can type data-[element attr] to give it a custom attribute -->
+                                <form class="like-unlike-forms" data-form-id="${response.id}">
+                                    <!-- csrf_token is a cross-site request forgery protection token -->
+                                    <button href="#" class="btn btn-primary" id="like-unlike-${response.id}">Like (0)</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `)
+            likeUnlikePosts();
+            $('#addPostModal').modal('hide');
+            handleAlerts('success', 'New post added!');
         },
         error: function(error)
         {
             console.log(error);
+            handleAlerts('danger', 'Oops...something went wrong');
         }
     })
 })
