@@ -18,7 +18,7 @@ app_name = 'posts'
 #if we add '/posts' to the url pattern path we would have to navigate to http://127.0.0.1:8000/posts to get to this page
 #We can add variables to the url in the <> tag
 urlpatterns = [
-    path('', post_list_and_create, name='main_board'),
+    path('', post_list_and_create, name='main-board'),
     path('like-unlike/', like_unlike_post, name='like-unlike'),
     path('upload/', image_upload_view, name='image-upload'),
     path('<pk>/', post_detail, name='post-detail'),

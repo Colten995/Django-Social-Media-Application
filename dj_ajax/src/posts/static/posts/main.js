@@ -267,10 +267,10 @@ const myDropzone = new Dropzone('#my-dropzone', {
             formData.append('new_post_id', newPostId);
         })
     },
-    maxFiles: 5,
+    maxFiles: 3,
     //max file size is 4 MB
     maxFilesize: 4,
-    acceptedFiles: '.png, .jpg, .jpeg'
+    acceptedFiles: '.png'
 })
 
 getData();
