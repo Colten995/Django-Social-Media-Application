@@ -4,6 +4,7 @@ from django.http import JsonResponse, HttpResponse
 from .forms import PostForm
 from profiles.models import Profile
 from .utils import action_permission
+from django.contrib.auth.decorators import login_required
 # from django.core import serializers
 
 # Create your views here.
@@ -13,6 +14,8 @@ from .utils import action_permission
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+#This login required decorator requires the user to login to load the view
+@login_required
 #render all of the posts using the template provided to the render method
 def post_list_and_create(request):
     form = PostForm(request.POST or None)
@@ -40,6 +43,7 @@ def post_list_and_create(request):
     }
     return render(request, 'posts/main.html', context)
 
+@login_required
 def post_detail(request, pk):
     obj = Post.objects.get(pk=pk)
     form = PostForm()
@@ -52,6 +56,7 @@ def post_detail(request, pk):
     return render(request, 'posts/detail.html', context)
 
 #The query set is not a JSON serializable format, so we need to format it
+@login_required
 def load_post_data_view(request, num_posts):
     if is_ajax(request):
         #Get the number of posts to display from the url
@@ -79,6 +84,7 @@ def load_post_data_view(request, num_posts):
         # data = serializers.serialize('json', qs)
         return JsonResponse({'data':data[lower:upper], 'size':size})
 
+@login_required
 def post_detail_data_view(request, pk):
     #This is shorthand to get the post that has a primary key equal to the primary key
     obj = Post.objects.get(pk=pk)
@@ -92,6 +98,7 @@ def post_detail_data_view(request, pk):
 
     return JsonResponse({'data' : data})
 
+@login_required
 def like_unlike_post(request):
     #.is_ajax attribute is deprecated, so we have to use our own function
     if is_ajax(request):
@@ -110,6 +117,8 @@ def like_unlike_post(request):
 # def hello_world_view(request):
 #     return JsonResponse({'text': 'hello world x2'})
 
+@login_required
+@action_permission
 def update_post(request, pk):
     obj = Post.objects.get(pk=pk)
     if is_ajax(request):
@@ -123,6 +132,7 @@ def update_post(request, pk):
             'body' : new_body,
         })
 
+@login_required
 @action_permission
 def delete_post(request, pk):
     obj = Post.objects.get(pk=pk)
