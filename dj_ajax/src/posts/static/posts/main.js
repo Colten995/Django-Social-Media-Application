@@ -20,7 +20,11 @@ const url = window.location.href
 // console.log(window.location);
 
 const alertBox = document.getElementById('alert-box')
-console.log('csrf', csrf[0].value);
+// console.log('csrf', csrf[0].value);
+
+const dropzone = document.getElementById('my-dropzone');
+const addBtn = document.getElementById('add-btn');
+const closeBtns = [...document.getElementsByClassName('add-modal-close')];
 
 
 //Create an ajax request to get the hello world view response
@@ -226,9 +230,9 @@ postForm.addEventListener('submit', e=>{
                 </div>
             `)
             likeUnlikePosts();
-            $('#addPostModal').modal('hide');
+            // $('#addPostModal').modal('hide');
             handleAlerts('success', 'New post added!');
-            postForm.reset();
+            // postForm.reset();
         },
         error: function(error)
         {
@@ -237,5 +241,16 @@ postForm.addEventListener('submit', e=>{
         }
     })
 })
+
+addBtn.addEventListener('click', ()=>{
+    dropzone.classList.remove('not-visible');
+});
+
+closeBtns.forEach(btn=> btn.addEventListener('click', ()=>{
+    postForm.reset();
+    if (!dropzone.classList.contains('not-visible')) {
+        dropzone.classList.add('not-visible');
+    }
+}))
 
 getData();
