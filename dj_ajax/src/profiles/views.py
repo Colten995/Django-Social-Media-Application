@@ -10,6 +10,7 @@ def is_ajax(request):
 
 def my_profile_view(request):
     obj = Profile.objects.get(user = request.user)
+    #instance = obj tells django to use that profile model
     form = ProfileForm(request.POST or None, request.FILES or None, instance = obj)
     if is_ajax(request):
         if form.is_valid():
