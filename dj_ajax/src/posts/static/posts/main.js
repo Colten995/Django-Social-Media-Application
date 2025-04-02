@@ -151,7 +151,7 @@ const getData = ()=>{
                                         <!-- can type data-[element attr] to give it a custom attribute -->
                                         <form class="like-unlike-forms" data-form-id="${el.id}">
                                             <!-- csrf_token is a cross-site request forgery protection token -->
-                                            <button href="#" class="btn btn-primary" id="like-unlike-${el.id}">${el.liked ? `Unlike (${el.count})`: `Like (${el.count})`}</button>
+                                            <button class="btn btn-primary" id="like-unlike-${el.id}">${el.liked ? `Unlike (${el.count})`: `Like (${el.count})`}</button>
                                         </form>
                                     </div>
                                 </div>
@@ -185,6 +185,7 @@ loadBtn.addEventListener('click', ()=>{
     getData();
 })
 
+let newPostId = null;
 postForm.addEventListener('submit', e=>{
     e.preventDefault()
 
@@ -199,6 +200,7 @@ postForm.addEventListener('submit', e=>{
         success: function(response)
         {
             console.log(response);
+            newPostId = response.id
             //'afterbegin' puts the postBox at the top of the element
             postsBox.insertAdjacentHTML('afterbegin', `
                 <!-- The line of code below is commented out -->
@@ -216,13 +218,13 @@ postForm.addEventListener('submit', e=>{
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-2">
-                                <a href="#" class="btn btn-primary">Details</a>
+                                <a href="${url}${response.id}" class="btn btn-primary">Details</a>
                             </div>
                             <div class="col-2">
                                 <!-- can type data-[element attr] to give it a custom attribute -->
                                 <form class="like-unlike-forms" data-form-id="${response.id}">
                                     <!-- csrf_token is a cross-site request forgery protection token -->
-                                    <button href="#" class="btn btn-primary" id="like-unlike-${response.id}">Like (0)</button>
+                                    <button class="btn btn-primary" id="like-unlike-${response.id}">Like (0)</button>
                                 </form>
                             </div>
                         </div>
@@ -252,5 +254,23 @@ closeBtns.forEach(btn=> btn.addEventListener('click', ()=>{
         dropzone.classList.add('not-visible');
     }
 }))
+
+//If we don't set this dropzone will attach twice and we will have errors
+Dropzone.autoDiscover = false
+
+const myDropzone = new Dropzone('#my-dropzone', {
+    url: 'upload/',
+    init: function(){
+        this.on('sending', function(file, xhr, formData){
+            //when the dropzone sends it adds the csrf token and the new post id to the form data
+            formData.append('csrfmiddlewaretoken', csrftoken);
+            formData.append('new_post_id', newPostId);
+        })
+    },
+    maxFiles: 5,
+    //max file size is 4 MB
+    maxFilesize: 4,
+    acceptedFiles: '.png, .jpg, .jpeg'
+})
 
 getData();
