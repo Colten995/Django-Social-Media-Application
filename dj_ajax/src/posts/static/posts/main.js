@@ -253,6 +253,9 @@ closeBtns.forEach(btn=> btn.addEventListener('click', ()=>{
     if (!dropzone.classList.contains('not-visible')) {
         dropzone.classList.add('not-visible');
     }
+    //remove any pre-existing pictures from the dropzone
+    const myDropzone = Dropzone.forElement("#my-dropzone");
+    myDropzone.removeAllFiles(true);
 }))
 
 //If we don't set this dropzone will attach twice and we will have errors
@@ -270,7 +273,7 @@ const myDropzone = new Dropzone('#my-dropzone', {
     maxFiles: 3,
     //max file size is 4 MB
     maxFilesize: 4,
-    acceptedFiles: '.png'
+    acceptedFiles: '.png, .jpg, .jpeg'
 })
 
 getData();
