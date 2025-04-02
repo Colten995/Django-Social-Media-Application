@@ -3,6 +3,7 @@ from .models import Post, Photo
 from django.http import JsonResponse, HttpResponse
 from .forms import PostForm
 from profiles.models import Profile
+from .utils import action_permission
 # from django.core import serializers
 
 # Create your views here.
@@ -122,11 +123,15 @@ def update_post(request, pk):
             'body' : new_body,
         })
 
+@action_permission
 def delete_post(request, pk):
     obj = Post.objects.get(pk=pk)
+    #this ensures that this only executes when we make an ajax request and we don't get their via an HTTP request
+    #Like a button action instead of manually changing the URL
     if is_ajax(request):
         obj.delete()
         return JsonResponse({})
+    return JsonResponse({'msg' : 'access denied - ajax only'})
     
 def image_upload_view(request):
     # print (request.FILES)
